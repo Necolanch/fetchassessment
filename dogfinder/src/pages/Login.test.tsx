@@ -1,9 +1,14 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Login } from "./Login";
+import { ResponseHandler } from "../services/ResponseHandler";
+import { APIGateway } from "../services/APIGateway";
+import { AuthService } from "../services/auth/authService";
 
+const apiGateway = new APIGateway();
+const authGateway = new AuthService(apiGateway);
 describe("Login", () => {
-    const setup = () => render(<Login />);
+    const setup = () => render(<Login authGateway={authGateway} />);
 
     it("Renders on screen", () => {
         setup();

@@ -6,11 +6,17 @@ import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Login } from './pages/Login';
 import { Search } from './pages/Search';
+import { AuthService } from './services/auth/authService';
+import { APIGateway } from './services/APIGateway';
+import { ResponseHandler } from './services/ResponseHandler';
+
+const apiGateway = new APIGateway();
+const authGateway = new AuthService(apiGateway);
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Login />
+    element: <Login authGateway={authGateway} />
   },
   {
     path: "/search",

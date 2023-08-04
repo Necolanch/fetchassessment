@@ -1,32 +1,39 @@
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
-import authService from "../services/authService";
+import authService from "../services/APIGateway";
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { APIGateway } from "../services/APIGateway";
+import { IAuthGateway } from "../services/auth/IAuthGateway";
 
-export const Login = () => {
+interface ILoginProps {
+    authGateway: IAuthGateway
+}
+export const Login = ({ authGateway }: ILoginProps) => {
     const name = useRef<HTMLInputElement>(null);
     const email = useRef<HTMLInputElement>(null);
-    const nameError = document.getElementById("name-error");
-    const emailError = document.getElementById("email-error");
+    const nameError = document.getElementById("name-error") as HTMLParagraphElement;
+    const emailError = document.getElementById("email-error") as HTMLParagraphElement;
     const navigate = useNavigate();
 
     const handleLogin = (e: any) => {
         e.preventDefault()
-        authService.login(name.current?.value!, email.current?.value!)
+        authGateway.Login(name.current?.value!, email.current?.value!)
             .then(response => {
-                if (response?.message === "Please enter your name") {
+                console.log(response);
+                if (response.message === "Please enter your name") {
                     nameError!.style.display = "block";
-                } else if (response?.message === "Please enter a valid email") {
+                    emailError!.style.display = "none";
+                } else if (response.message === "Please enter a valid email") {
                     nameError!.style.display = "none";
                     emailError!.style.display = "block";
-                } else if (response === undefined) {
+                } else if (response.status === 200) {
                     nameError!.style.display = "none";
                     emailError!.style.display = "none";
                     navigate("/search");
                 }
             })
-            .catch(err => console.log(err))
+            .catch(err => console.log(err));
     }
     return (
         <div>
