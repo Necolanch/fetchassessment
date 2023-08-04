@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Login } from './pages/Login';
 import { Search } from './pages/Search';
 import { AuthService } from './services/auth/authService';
 import { APIGateway } from './services/APIGateway';
-import { ResponseHandler } from './services/ResponseHandler';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 const apiGateway = new APIGateway();
 const authGateway = new AuthService(apiGateway);
@@ -29,7 +29,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
 

@@ -1,14 +1,16 @@
 interface ISortProps {
     sortAtoZ: () => void;
     sortZtoA: () => void;
+    styles: string;
 }
 
-const Sort = ({ sortAtoZ, sortZtoA }: ISortProps) => {
+const Sort = ({ sortAtoZ, sortZtoA, styles }: ISortProps) => {
     return (
         <>
-            <select name="sort" id="sort">
-                <option onClick={sortAtoZ} value="A-Z">A - Z</option>
-                <option onClick={sortZtoA} value="Z-A">Z - A</option>
+            <select role="sort" className={styles} name="sort" id="sort">
+                <option value="Sort by:">Sort by:</option>
+                <option role="atoz" onClick={sortAtoZ} value="A-Z">A - Z</option>
+                <option role="ztoa" onClick={sortZtoA} value="Z-A">Z - A</option>
             </select>
         </>
     )

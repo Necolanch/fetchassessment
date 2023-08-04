@@ -1,8 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
+import filterReducer from "./features/filter/filterSlice";
+import matchReducer from "./features/match/matchSlice"
 
 export const store = configureStore({
     reducer: {
-
+        filter: filterReducer,
+        match: matchReducer
     }
 })
 

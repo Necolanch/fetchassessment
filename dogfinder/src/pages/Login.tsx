@@ -1,9 +1,7 @@
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
-import authService from "../services/APIGateway";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { APIGateway } from "../services/APIGateway";
 import { IAuthGateway } from "../services/auth/IAuthGateway";
 
 interface ILoginProps {
@@ -12,15 +10,21 @@ interface ILoginProps {
 export const Login = ({ authGateway }: ILoginProps) => {
     const name = useRef<HTMLInputElement>(null);
     const email = useRef<HTMLInputElement>(null);
-    const nameError = document.getElementById("name-error") as HTMLParagraphElement;
-    const emailError = document.getElementById("email-error") as HTMLParagraphElement;
     const navigate = useNavigate();
+    const authorized = JSON.parse(localStorage.getItem("authorized")!);
+
+    useEffect(() => {
+        if (authorized) {
+            navigate("/search")
+        }
+    })
 
     const handleLogin = (e: any) => {
         e.preventDefault()
+        const nameError = document.getElementById("name-error") as HTMLParagraphElement;
+        const emailError = document.getElementById("email-error") as HTMLParagraphElement;
         authGateway.Login(name.current?.value!, email.current?.value!)
             .then(response => {
-                console.log(response);
                 if (response.message === "Please enter your name") {
                     nameError!.style.display = "block";
                     emailError!.style.display = "none";
@@ -30,11 +34,14 @@ export const Login = ({ authGateway }: ILoginProps) => {
                 } else if (response.status === 200) {
                     nameError!.style.display = "none";
                     emailError!.style.display = "none";
+                    localStorage.setItem("authorized", JSON.stringify(true));
                     navigate("/search");
                 }
             })
             .catch(err => console.log(err));
     }
+
+    setTimeout(() => localStorage.removeItem("authorized"), 3600000)
     return (
         <div>
             <form role="login" onSubmit={handleLogin}>

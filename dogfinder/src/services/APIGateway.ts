@@ -1,5 +1,4 @@
 import { IAPIGateway } from "./IAPIGateway";
-import { IResponseHandler } from "./IResponseHandler";
 
 export class APIGateway implements IAPIGateway {
     public async Get<T>(path: string): Promise<T> {
