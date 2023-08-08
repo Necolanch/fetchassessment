@@ -12,7 +12,7 @@ export class APIGateway implements IAPIGateway {
             .then(data => data)
     }
 
-    public async Post<T>(path: string, requestBody: { name: string, email: string }): Promise<any> {
+    public async Login<T>(path: string, requestBody: { name: string, email: string }): Promise<any> {
 
         const re = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
         const emailTest = re.test(requestBody.email);
@@ -31,6 +31,20 @@ export class APIGateway implements IAPIGateway {
             })
                 .then(response => response)
         }
+    }
+
+    public async Post<T>(path: string, requestBody: {}): Promise<any> {
+
+        return fetch(path, {
+            credentials: "include",
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody)
+        })
+            .then(response => response)
+
     }
 
     public async PostNoBody<T>(path: string) {

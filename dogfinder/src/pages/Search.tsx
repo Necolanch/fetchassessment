@@ -3,6 +3,8 @@ import Sort from "../components/Sort";
 import { DogService } from "../services/dog/dogService";
 import { APIGateway } from "../services/APIGateway";
 import { useNavigate } from "react-router-dom";
+import BreedFilter from "../components/BreedFilter";
+import DogDisplay from "../components/DogDisplay";
 
 export const Search = () => {
     const apiGateway = new APIGateway();
@@ -28,7 +30,11 @@ export const Search = () => {
     //Sort component to sort results by ascending or descending
     return (
         <>
-            <Sort styles="" sortAtoZ={sortAtoZ} sortZtoA={sortZtoA} />
+            <div className="w-1/4 mt-40 flex flex-col">
+                <Sort styles="" sortAtoZ={sortAtoZ} sortZtoA={sortZtoA} />
+                <BreedFilter />
+                <DogDisplay />
+            </div>
         </>
     )
 }

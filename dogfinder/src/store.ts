@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import filterReducer from "./features/filter/filterSlice";
-import matchReducer from "./features/match/matchSlice"
+import matchReducer from "./features/match/matchSlice";
+import dogReducer from "./features/dog/dogSlice";
 
 export const store = configureStore({
     reducer: {
         filter: filterReducer,
-        match: matchReducer
+        match: matchReducer,
+        dog: dogReducer
     }
 })
 

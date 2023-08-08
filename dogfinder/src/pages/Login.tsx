@@ -41,7 +41,7 @@ export const Login = ({ authGateway }: ILoginProps) => {
             .catch(err => console.log(err));
     }
 
-    setTimeout(() => localStorage.removeItem("authorized"), 3600000)
+    setTimeout(() => localStorage.setItem("authorized", JSON.stringify(false)), 3600000)
     return (
         <div>
             <form role="login" onSubmit={handleLogin}>
