@@ -57,17 +57,3 @@ export class APIGateway implements IAPIGateway {
             .then(data => data);
     };
 }
-
-
-
-const logout = async () => {
-    await fetch("https://frontend-take-home-service.fetch.com/auth/logout", {
-        method: "POST"
-    })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(err => console.log(err))
-}
-
-const authService = { logout };
-export default authService;

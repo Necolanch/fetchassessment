@@ -5,14 +5,18 @@ import { Dog } from "../services/dog/IDog";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { setIds } from "../features/dog/dogSlice";
 
-const DogDisplay = () => {
-    const apiGateway = new APIGateway();
+interface IDogDisplayProps {
+    dogs: Dog[]
+}
+
+const DogDisplay = ({ dogs }: IDogDisplayProps) => {
+    const [loading, setLoading] = useState(false)
+    /* const apiGateway = new APIGateway();
     const dogService = new DogService(apiGateway);
     const dispatch = useAppDispatch();
     const [dogs, setDogs] = useState<Dog[]>([]);
     const [loading, setLoading] = useState(false);
     const resultIds = useAppSelector(state => state.dog.resultIds);
-    console.log(dogs);
 
     useEffect(() => {
         dogService.DogDefault()
@@ -29,12 +33,12 @@ const DogDisplay = () => {
             .then(data => setDogs(data))
 
         setLoading(true)
-    }, [resultIds]);
+    }, [resultIds]); */
 
     return (
         <>
             {
-                loading ? dogs.map(dog => {
+                dogs.map(dog => {
                     return (
                         <section key={dog.id}>
                             <img src={dog.img} alt="Cute doggy" />
@@ -47,9 +51,7 @@ const DogDisplay = () => {
 
                         </section>
                     )
-                }) : (
-                    <p>Loading...</p>
-                )
+                })
 
             }
         </>

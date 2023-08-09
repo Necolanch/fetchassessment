@@ -3,4 +3,6 @@ export interface IDogGateway {
     SortZtoA: () => Promise<any>;
     GetBreeds: () => Promise<string[]>;
     GetDogs: () => Promise<any>;
+    NextPage: () => Promise<any>;
+    PreviousPage: () => Promise<any>;
 }
