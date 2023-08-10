@@ -5,14 +5,14 @@ import type { RootState } from '../../store';
 interface FilterState {
     ageMin: number | null,
     ageMax: number | null,
-    breeds: string[],
+    breeds: string,
     zipCodes: string[]
 }
 
 const initialState: FilterState = {
     ageMin: null,
     ageMax: null,
-    breeds: [],
+    breeds: "",
     zipCodes: []
 }
 

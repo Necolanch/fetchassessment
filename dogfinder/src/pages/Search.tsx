@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import Sort from "../components/Sort";
+import BreedFilter from "../components/BreedFilter";
+import DogDisplay from "../components/DogDisplay";
+import { Button } from "../components/Button";
 import { DogService } from "../services/dog/dogService";
 import { Dog } from "../services/dog/IDog";
 import { APIGateway } from "../services/APIGateway";
 import { useNavigate } from "react-router-dom";
-import BreedFilter from "../components/BreedFilter";
-import DogDisplay from "../components/DogDisplay";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { setIds } from "../features/dog/dogSlice";
 import { setNextPage, setPreviousPage } from "../features/pages/next";
+import { setBreeds } from "../features/filter/filterSlice";
 
 export const Search = () => {
     const apiGateway = new APIGateway();
@@ -20,6 +22,7 @@ export const Search = () => {
     const [loading, setLoading] = useState(false);
     const resultIds = useAppSelector(state => state.dog.resultIds);
     const previous = useAppSelector(state => state.pages.previous)
+    const breedFilter = useAppSelector(state => state.filter.breeds);
 
     useEffect(() => {
         if (!authorized) {
@@ -31,7 +34,7 @@ export const Search = () => {
                 dispatch(setIds(response.resultIds))
                 dispatch(setNextPage(response.next))
             })
-    }, [])
+    }, [breedFilter])
 
     useEffect(() => {
         dogService.GetDogs()
@@ -45,6 +48,7 @@ export const Search = () => {
         dogService.DogDefault()
             .then(response => {
                 dispatch(setIds(response.resultIds))
+                dispatch(setNextPage(response.next))
             })
     }
 
@@ -52,6 +56,7 @@ export const Search = () => {
         dogService.SortZtoA()
             .then((response: any) => {
                 dispatch(setIds(response.resultIds))
+                dispatch(setNextPage(response.next))
             })
     }
 
@@ -62,6 +67,8 @@ export const Search = () => {
                 dispatch(setNextPage(response.next))
                 if (response.prev) {
                     dispatch(setPreviousPage(response.prev))
+                } else {
+                    dispatch(setPreviousPage(""))
                 }
             })
     }
@@ -73,8 +80,26 @@ export const Search = () => {
                 dispatch(setPreviousPage(response.prev))
                 if (response.next) {
                     dispatch(setNextPage(response.next))
+                } else {
+                    dispatch(setNextPage(""))
                 }
             })
+    }
+
+    const applyFilters = () => {
+        const breedsList = document.querySelectorAll(".breed") as NodeListOf<HTMLInputElement>;
+        const breeds = [...breedsList];
+        //Loop through all checkboxes
+        //If it is checked add a query parameter of &breed={breed}
+        //When done make a new GET API call
+        let breedParam = "";
+        breeds.map(breed => {
+            if (breed.checked) {
+                breedParam += `&breeds=${breed.value}`
+            }
+        })
+        console.log(breedParam)
+        dispatch(setBreeds(breedParam))
     }
     //Filter component to filter by specific breeds
     //Sort component to sort results by ascending or descending
@@ -82,7 +107,9 @@ export const Search = () => {
         <div className="flex">
             <div className="w-1/4 mt-40 flex flex-col">
                 <Sort styles="" sortAtoZ={sortAtoZ} sortZtoA={sortZtoA} />
+                <p>Filter</p>
                 <BreedFilter />
+                <Button text="Apply Filters" styles="" onClick={applyFilters} />
             </div>
             <section>
                 <DogDisplay dogs={dogs} />

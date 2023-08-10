@@ -11,7 +11,7 @@ export const Login = ({ authGateway }: ILoginProps) => {
     const name = useRef<HTMLInputElement>(null);
     const email = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
-    const authorized = localStorage.getItem("authorizedd");
+    const authorized = localStorage.getItem("authorized");
 
     useEffect(() => {
         if (authorized) {
