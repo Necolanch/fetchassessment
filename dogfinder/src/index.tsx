@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Login } from './pages/Login';
 import { Search } from './pages/Search';
+import Match from './pages/Match';
 import { AuthService } from './services/auth/authService';
 import { APIGateway } from './services/APIGateway';
 import { Provider } from 'react-redux';
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: "/search",
     element: <Search />
+  },
+  {
+    path: "/match",
+    element: <Match />
   }
 ])
 

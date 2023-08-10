@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "../hooks";
 import { setIds } from "../features/dog/dogSlice";
 import { setNextPage, setPreviousPage } from "../features/pages/next";
 import { setBreeds } from "../features/filter/filterSlice";
+import AgeFilter from "../components/AgeFilter";
 
 export const Search = () => {
     const apiGateway = new APIGateway();
@@ -23,6 +24,8 @@ export const Search = () => {
     const resultIds = useAppSelector(state => state.dog.resultIds);
     const previous = useAppSelector(state => state.pages.previous)
     const breedFilter = useAppSelector(state => state.filter.breeds);
+    const ageMin = useAppSelector(state => state.filter.ageMin);
+    const ageMax = useAppSelector(state => state.filter.ageMax)
 
     useEffect(() => {
         if (!authorized) {
@@ -34,7 +37,7 @@ export const Search = () => {
                 dispatch(setIds(response.resultIds))
                 dispatch(setNextPage(response.next))
             })
-    }, [breedFilter])
+    }, [breedFilter, ageMin, ageMax])
 
     useEffect(() => {
         dogService.GetDogs()
@@ -49,6 +52,7 @@ export const Search = () => {
             .then(response => {
                 dispatch(setIds(response.resultIds))
                 dispatch(setNextPage(response.next))
+                dispatch(setPreviousPage(""))
             })
     }
 
@@ -57,6 +61,7 @@ export const Search = () => {
             .then((response: any) => {
                 dispatch(setIds(response.resultIds))
                 dispatch(setNextPage(response.next))
+                dispatch(setPreviousPage(""))
             })
     }
 
@@ -89,9 +94,6 @@ export const Search = () => {
     const applyFilters = () => {
         const breedsList = document.querySelectorAll(".breed") as NodeListOf<HTMLInputElement>;
         const breeds = [...breedsList];
-        //Loop through all checkboxes
-        //If it is checked add a query parameter of &breed={breed}
-        //When done make a new GET API call
         let breedParam = "";
         breeds.map(breed => {
             if (breed.checked) {
@@ -101,19 +103,20 @@ export const Search = () => {
         console.log(breedParam)
         dispatch(setBreeds(breedParam))
     }
-    //Filter component to filter by specific breeds
-    //Sort component to sort results by ascending or descending
+
     return (
         <div className="flex">
             <div className="w-1/4 mt-40 flex flex-col">
                 <Sort styles="" sortAtoZ={sortAtoZ} sortZtoA={sortZtoA} />
                 <p>Filter</p>
+                <AgeFilter />
                 <BreedFilter />
                 <Button text="Apply Filters" styles="" onClick={applyFilters} />
             </div>
             <section>
                 <DogDisplay dogs={dogs} />
             </section>
+            <p className="underline underline-offset-4 hover:cursor-pointer h-fit" onClick={() => navigate("/match")}>Find your Dog Match</p>
             <footer>
                 {
                     previous === "" ? (

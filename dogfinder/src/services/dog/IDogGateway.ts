@@ -5,4 +5,6 @@ export interface IDogGateway {
     GetDogs: () => Promise<any>;
     NextPage: () => Promise<any>;
     PreviousPage: () => Promise<any>;
+    Match: () => Promise<any>;
+    GetMatch: () => Promise<any>;
 }

@@ -44,7 +44,7 @@ export const Login = ({ authGateway }: ILoginProps) => {
     setTimeout(() => localStorage.setItem("authorized", JSON.stringify(false)), 3600000)
     return (
         <div>
-            <form role="login" onSubmit={handleLogin}>
+            <form id="login-form" role="login" onSubmit={handleLogin}>
                 <Input type="text" role="name input" styles="rounded-sm" reference={name} />
                 <Input type="email" role="email input" styles="text-red-500" reference={email} />
                 <Button styles="bg-yellow-500" text="Login" onClick={e => handleLogin(e)}></Button>

@@ -1,16 +1,12 @@
-import { useState, useEffect } from "react";
-import { APIGateway } from "../services/APIGateway";
-import { DogService } from "../services/dog/dogService";
+
 import { Dog } from "../services/dog/IDog";
-import { useAppDispatch, useAppSelector } from "../hooks";
-import { setIds } from "../features/dog/dogSlice";
+import DogResult from "./DogResult";
 
 interface IDogDisplayProps {
-    dogs: Dog[]
+    dogs: Dog[];
 }
 
 const DogDisplay = ({ dogs }: IDogDisplayProps) => {
-    const [loading, setLoading] = useState(false)
     /* const apiGateway = new APIGateway();
     const dogService = new DogService(apiGateway);
     const dispatch = useAppDispatch();
@@ -40,16 +36,7 @@ const DogDisplay = ({ dogs }: IDogDisplayProps) => {
             {
                 dogs.map(dog => {
                     return (
-                        <section key={dog.id}>
-                            <img src={dog.img} alt="Cute doggy" />
-                            <h4>{dog.name}</h4>
-                            <div>
-                                <p>{dog.age}</p>
-                                <p>{dog.breed}</p>
-                                <p>{dog.zip_code}</p>
-                            </div>
-
-                        </section>
+                        <DogResult key={dog.id} dog={dog} />
                     )
                 })
 
