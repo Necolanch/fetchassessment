@@ -12,13 +12,17 @@ const AgeFilter = () => {
         dispatch(setAgeMax(e.target.value));
     }
     return (
-        <>
-            <label htmlFor="minAge">Min Age</label>
-            <input name="minAge" onChange={changeAgeMin} type="number" />
+        <div className="flex my-4">
+            <div className="mr-4">
+                <label htmlFor="minAge">Min Age</label>
+                <input className="w-12 ml-2 p-2 h-6 border rounded-md border-slate-800 focus:outline-amber-300" name="minAge" onChange={changeAgeMin} type="number" />
+            </div>
 
-            <label htmlFor="maxAge">Max Age</label>
-            <input name="maxAge" onChange={changeAgeMax} type="number" />
-        </>
+            <div className="">
+                <label htmlFor="maxAge">Max Age</label>
+                <input className="w-12 ml-2 h-6 p-2 border rounded-md border-slate-800 focus:outline-amber-300" name="maxAge" onChange={changeAgeMax} type="number" />
+            </div>
+        </div>
     )
 }
 

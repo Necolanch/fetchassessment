@@ -25,10 +25,11 @@ export const Search = () => {
     const previous = useAppSelector(state => state.pages.previous)
     const breedFilter = useAppSelector(state => state.filter.breeds);
     const ageMin = useAppSelector(state => state.filter.ageMin);
-    const ageMax = useAppSelector(state => state.filter.ageMax)
+    const ageMax = useAppSelector(state => state.filter.ageMax);
+    const [showBreeds, setShowBreeds] = useState(false);
 
     useEffect(() => {
-        if (!authorized) {
+        if (authorized === "false" || authorized === null) {
             navigate("/")
         }
 
@@ -100,31 +101,45 @@ export const Search = () => {
                 breedParam += `&breeds=${breed.value}`
             }
         })
-        console.log(breedParam)
         dispatch(setBreeds(breedParam))
+        setShowBreeds(false)
     }
 
+    setTimeout(() => localStorage.setItem("authorized", "false"), 3600000)
     return (
-        <div className="flex">
-            <div className="w-1/4 mt-40 flex flex-col">
-                <Sort styles="" sortAtoZ={sortAtoZ} sortZtoA={sortZtoA} />
-                <p>Filter</p>
-                <AgeFilter />
-                <BreedFilter />
-                <Button text="Apply Filters" styles="" onClick={applyFilters} />
+        <div className={`w-screen bg-gradient-to-tr from-[#40E0D0] to-teal-200 flex flex-col`}>
+            <div className="w-screen h-20 relative top-12 flex justify-center items-center">
+                <h1 className="font-light text-4xl text-cyan-950 text-center">NewHome</h1>
+                <img src={require("../img/pawprint.png")} alt="Pawprint" width={40} height={40} />
             </div>
-            <section>
+            <p className="mt-12 text-center font-light text-sm">New friend, new home</p>
+            <div className={`w-screen mt-10 flex justify-center`}>
+                <div className="w-full flex flex-col items-center">
+                    <p className="">Filters</p>
+                    <Sort styles="w-24 h-6 border border-slate-800 rounded-md" sortAtoZ={sortAtoZ} sortZtoA={sortZtoA} />
+                    <AgeFilter />
+                    <div className="w-full flex flex-col items-center">
+                        <Button text={`${showBreeds ? "Hide Breeds" : "Show Breeds"}`} styles="hover:cursor-pointer w-32 h-12 bg-cyan-800 p-2 text-white rounded-sm font-medium" onClick={() => setShowBreeds(!showBreeds)} />
+                        <p className="underline underline-offset-4 hover:cursor-pointer h-fit text-slate-800 p-2" onClick={() => navigate("/match")}>Find your Dog Match</p>
+                    </div>
+                    <main className={`${showBreeds ? "block" : "hidden"} absolute top-80 mt-8 w-72 h-64 overflow-auto p-4 rounded-md bg-cyan-800 text-slate-100`}>
+                        <h4 className="text-center">Filter by Breeds</h4>
+                        <BreedFilter containerStyles="" />
+                        <Button text="Apply Filters" styles="bg-slate-100 p-2 text-slate-800 rounded-sm font-medium" onClick={applyFilters} />
+                    </main>
+                </div>
+            </div>
+            <section className="w-screen mt-8 xl:grid xl:grid-cols-3 xl:gap-2">
                 <DogDisplay dogs={dogs} />
             </section>
-            <p className="underline underline-offset-4 hover:cursor-pointer h-fit" onClick={() => navigate("/match")}>Find your Dog Match</p>
-            <footer>
+            <footer className="w-full flex justify-around my-10">
                 {
                     previous === "" ? (
-                        <p onClick={nextPage} className="hover:cursor-pointer">{`Next ->`}</p>
+                        <p onClick={nextPage} className="hover:cursor-pointer hover:underline hover:text-slate-600">{`Next ->`}</p>
                     ) : (
                         <>
-                            <p className="hover:cursor-pointer hover:text-red-500" onClick={previousPage}>{`<- Previous`}</p>
-                            <p className="hover:cursor-pointer hover:text-red-500" onClick={nextPage}>{`Next ->`}</p>
+                            <p className="hover:cursor-pointer hover:underline hover:text-slate-600" onClick={previousPage}>{`<- Previous`}</p>
+                            <p className="hover:cursor-pointer hover:underline hover:text-slate-600" onClick={nextPage}>{`Next ->`}</p>
                         </>
                     )
                 }

@@ -2,7 +2,11 @@ import { APIGateway } from "../services/APIGateway";
 import { DogService } from "../services/dog/dogService";
 import { useState, useEffect } from "react";
 
-const BreedFilter = () => {
+interface IBreedFilterProps {
+    containerStyles: string
+}
+
+const BreedFilter = ({ containerStyles }: IBreedFilterProps) => {
     const apiGateway = new APIGateway();
     const dogService = new DogService(apiGateway);
     const [breeds, setBreeds] = useState<string[]>([]);
@@ -18,7 +22,7 @@ const BreedFilter = () => {
             {
                 breeds.map(breed => {
                     return (
-                        <div key={breed} className="flex">
+                        <div key={breed} className={containerStyles}>
                             <label className="mr-2">{breed}</label>
                             <input className="breed" value={breed} type="checkbox" />
                         </div>
@@ -28,10 +32,5 @@ const BreedFilter = () => {
         </>
     )
 }
-
-/*
-
-
-*/
 
 export default BreedFilter;
