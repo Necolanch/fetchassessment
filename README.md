@@ -7,6 +7,7 @@ I created this project because it was a tech assessment part of Fetch Rewards' h
 The project has a live site for you to view and use here: [https://fetchassessment-meulbiv79-necolanch.vercel.app/]
 
 To use locally, you can download the ZIP files and once you unzip it and are in the root directory, use the following commands:
+
 cd dogfinder
 
 npm i
