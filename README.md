@@ -8,7 +8,11 @@ The project has a live site for you to view and use here: [https://fetchassessme
 
 To use locally, you can download the ZIP files and once you unzip it and are in the root directory, use the following commands:
 cd dogfinder
+
 npm i
+
 npm start
+
+To run the tests I have made use npm run test.
 
 You can then view it at [http://localhost:3000].
