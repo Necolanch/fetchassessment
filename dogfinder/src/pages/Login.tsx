@@ -3,6 +3,7 @@ import { Button } from "../components/Button";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { IAuthGateway } from "../services/auth/IAuthGateway";
+import Cookies from 'js-cookie';
 
 interface ILoginProps {
     authGateway: IAuthGateway
@@ -14,7 +15,7 @@ export const Login = ({ authGateway }: ILoginProps) => {
     const authorized = localStorage.getItem("authorized");
 
     useEffect(() => {
-        if (authorized === "true") {
+        if (Cookies.get("frontendAuth") === "token") {
             navigate("/search")
         }
     }, [])
@@ -34,7 +35,7 @@ export const Login = ({ authGateway }: ILoginProps) => {
                 } else if (response.status === 200) {
                     nameError!.style.display = "none";
                     emailError!.style.display = "none";
-                    localStorage.setItem("authorized", "true")
+                    Cookies.set("frontendAuth", "token", { expires: 1 / 24 })
                     navigate("/search");
                 }
             })

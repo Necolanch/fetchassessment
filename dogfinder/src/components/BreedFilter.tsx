@@ -3,10 +3,11 @@ import { DogService } from "../services/dog/dogService";
 import { useState, useEffect } from "react";
 
 interface IBreedFilterProps {
-    containerStyles: string
+    containerStyles: string,
+    filterBreeds: () => void
 }
 
-const BreedFilter = ({ containerStyles }: IBreedFilterProps) => {
+const BreedFilter = ({ containerStyles, filterBreeds }: IBreedFilterProps) => {
     const apiGateway = new APIGateway();
     const dogService = new DogService(apiGateway);
     const [breeds, setBreeds] = useState<string[]>([]);
@@ -24,7 +25,7 @@ const BreedFilter = ({ containerStyles }: IBreedFilterProps) => {
                     return (
                         <div key={breed} className={containerStyles}>
                             <label className="mr-2">{breed}</label>
-                            <input className="breed" value={breed} type="checkbox" />
+                            <input className="breed" value={breed} type="checkbox" onClick={filterBreeds} />
                         </div>
                     )
                 })

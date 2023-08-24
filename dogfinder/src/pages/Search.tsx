@@ -12,6 +12,7 @@ import { setIds } from "../features/dog/dogSlice";
 import { setNextPage, setPreviousPage } from "../features/pages/next";
 import { setBreeds } from "../features/filter/filterSlice";
 import AgeFilter from "../components/AgeFilter";
+import Cookies from "js-cookie";
 
 export const Search = () => {
     const apiGateway = new APIGateway();
@@ -27,9 +28,10 @@ export const Search = () => {
     const ageMin = useAppSelector(state => state.filter.ageMin);
     const ageMax = useAppSelector(state => state.filter.ageMax);
     const [showBreeds, setShowBreeds] = useState(false);
+    let breedParam = "";
 
     useEffect(() => {
-        if (authorized === "false" || authorized === null) {
+        if (Cookies.get("frontendAuth") !== "token") {
             navigate("/")
         }
 
@@ -92,6 +94,17 @@ export const Search = () => {
             })
     }
 
+    const filterBreeds = () => {
+        const breedsList = document.querySelectorAll(".breed") as NodeListOf<HTMLInputElement>;
+        const breeds = [...breedsList];
+        breeds.map(breed => {
+            if (breed.checked) {
+                breedParam += `&breeds=${breed.value}`
+            }
+        })
+        dispatch(setBreeds(breedParam))
+    }
+
     const applyFilters = () => {
         const breedsList = document.querySelectorAll(".breed") as NodeListOf<HTMLInputElement>;
         const breeds = [...breedsList];
@@ -105,7 +118,6 @@ export const Search = () => {
         setShowBreeds(false)
     }
 
-    setTimeout(() => localStorage.setItem("authorized", "false"), 3600000)
     return (
         <div className={`w-screen bg-gradient-to-tr from-[#40E0D0] to-teal-200 flex flex-col`}>
             <div className="w-screen h-20 relative top-12 flex justify-center items-center">
@@ -124,8 +136,7 @@ export const Search = () => {
                     </div>
                     <main className={`${showBreeds ? "block" : "hidden"} absolute top-80 mt-8 w-72 h-64 overflow-auto p-4 rounded-md bg-cyan-800 text-slate-100`}>
                         <h4 className="text-center">Filter by Breeds</h4>
-                        <BreedFilter containerStyles="" />
-                        <Button text="Apply Filters" styles="bg-slate-100 p-2 text-slate-800 rounded-sm font-medium" onClick={applyFilters} />
+                        <BreedFilter containerStyles="" filterBreeds={filterBreeds} />
                     </main>
                 </div>
             </div>
