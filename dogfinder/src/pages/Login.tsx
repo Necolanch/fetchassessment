@@ -1,6 +1,6 @@
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IAuthGateway } from "../services/auth/IAuthGateway";
 import Cookies from 'js-cookie';
@@ -12,7 +12,8 @@ export const Login = ({ authGateway }: ILoginProps) => {
     const name = useRef<HTMLInputElement>(null);
     const email = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
-    const authorized = localStorage.getItem("authorized");
+    const [nameError, setNameError] = useState(false);
+    const [emailError, setEmailError] = useState(false);
 
     useEffect(() => {
         if (Cookies.get("frontendAuth") === "token") {
@@ -22,19 +23,17 @@ export const Login = ({ authGateway }: ILoginProps) => {
 
     const handleLogin = (e: any) => {
         e.preventDefault()
-        const nameError = document.getElementById("name-error") as HTMLParagraphElement;
-        const emailError = document.getElementById("email-error") as HTMLParagraphElement;
         authGateway.Login(name.current?.value!, email.current?.value!)
             .then(response => {
                 if (response.message === "Please enter your name") {
-                    nameError!.style.display = "block";
-                    emailError!.style.display = "none";
+                    setNameError(true)
+                    setEmailError(false)
                 } else if (response.message === "Please enter a valid email") {
-                    nameError!.style.display = "none";
-                    emailError!.style.display = "block";
+                    setNameError(false)
+                    setEmailError(true)
                 } else if (response.status === 200) {
-                    nameError!.style.display = "none";
-                    emailError!.style.display = "none";
+                    setNameError(false)
+                    setEmailError(false)
                     Cookies.set("frontendAuth", "token", { expires: 1 / 24 })
                     navigate("/search");
                 }
@@ -53,8 +52,8 @@ export const Login = ({ authGateway }: ILoginProps) => {
                 <label className="mt-4" htmlFor="">Email</label>
                 <Input type="email" role="email input" styles="rounded-sm border border-slate-800 outline-teal-700 p-1" reference={email} />
                 <Button styles="mt-4 p-2 w-20 bg-teal-400 font-medium rounded-sm" text="Login" onClick={e => handleLogin(e)}></Button>
-                <p id="name-error" hidden>Please enter your name</p>
-                <p id="email-error" style={{ display: "none" }}>Please enter a valid email address</p>
+                {nameError ? <p id="name-error">Please enter your name</p> : null}
+                {emailError ? <p id="email-error">Please enter a valid email address</p> : null}
             </form>
         </div>
     )

@@ -96,8 +96,7 @@ export const Search = () => {
 
     const filterBreeds = () => {
         const breedsList = document.querySelectorAll(".breed") as NodeListOf<HTMLInputElement>;
-        const breeds = [...breedsList];
-        breeds.map(breed => {
+        breedsList.forEach(breed => {
             if (breed.checked) {
                 breedParam += `&breeds=${breed.value}`
             }
@@ -105,18 +104,18 @@ export const Search = () => {
         dispatch(setBreeds(breedParam))
     }
 
-    const applyFilters = () => {
-        const breedsList = document.querySelectorAll(".breed") as NodeListOf<HTMLInputElement>;
-        const breeds = [...breedsList];
-        let breedParam = "";
-        breeds.map(breed => {
-            if (breed.checked) {
-                breedParam += `&breeds=${breed.value}`
-            }
-        })
-        dispatch(setBreeds(breedParam))
-        setShowBreeds(false)
-    }
+    //const applyFilters = () => {
+    //    const breedsList = document.querySelectorAll(".breed") as NodeListOf<HTMLInputElement>;
+    //    const breeds = [...breedsList];
+    //    let breedParam = "";
+    //    breeds.map(breed => {
+    //        if (breed.checked) {
+    //            breedParam += `&breeds=${breed.value}`
+    //        }
+    //    })
+    //    dispatch(setBreeds(breedParam))
+    //    setShowBreeds(false)
+    //}
 
     return (
         <div className={`w-screen bg-gradient-to-tr from-[#40E0D0] to-teal-200 flex flex-col`}>
