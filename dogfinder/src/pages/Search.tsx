@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { setIds } from "../features/dog/dogSlice";
 import { setNextPage, setPreviousPage } from "../features/pages/next";
-import { setBreeds } from "../features/filter/filterSlice";
 import AgeFilter from "../components/AgeFilter";
 import Cookies from "js-cookie";
 
@@ -18,17 +17,16 @@ export const Search = () => {
     const apiGateway = new APIGateway();
     const dogService = new DogService(apiGateway);
     const navigate = useNavigate();
-    const authorized = localStorage.getItem("authorized");
     const dispatch = useAppDispatch();
     const [dogs, setDogs] = useState<Dog[]>([]);
     const [loading, setLoading] = useState(false);
     const resultIds = useAppSelector(state => state.dog.resultIds);
-    const previous = useAppSelector(state => state.pages.previous)
+    const previous = useAppSelector(state => state.pages.previous);
+    const next = useAppSelector(state => state.pages.next);
     const breedFilter = useAppSelector(state => state.filter.breeds);
     const ageMin = useAppSelector(state => state.filter.ageMin);
     const ageMax = useAppSelector(state => state.filter.ageMax);
     const [showBreeds, setShowBreeds] = useState(false);
-    let breedParam = "";
 
     useEffect(() => {
         if (Cookies.get("frontendAuth") !== "token") {
@@ -94,29 +92,6 @@ export const Search = () => {
             })
     }
 
-    const filterBreeds = () => {
-        const breedsList = document.querySelectorAll(".breed") as NodeListOf<HTMLInputElement>;
-        breedsList.forEach(breed => {
-            if (breed.checked) {
-                breedParam += `&breeds=${breed.value}`
-            }
-        })
-        dispatch(setBreeds(breedParam))
-    }
-
-    //const applyFilters = () => {
-    //    const breedsList = document.querySelectorAll(".breed") as NodeListOf<HTMLInputElement>;
-    //    const breeds = [...breedsList];
-    //    let breedParam = "";
-    //    breeds.map(breed => {
-    //        if (breed.checked) {
-    //            breedParam += `&breeds=${breed.value}`
-    //        }
-    //    })
-    //    dispatch(setBreeds(breedParam))
-    //    setShowBreeds(false)
-    //}
-
     return (
         <div className={`w-screen bg-gradient-to-tr from-[#40E0D0] to-teal-200 flex flex-col`}>
             <div className="w-screen h-20 relative top-12 flex justify-center items-center">
@@ -135,7 +110,7 @@ export const Search = () => {
                     </div>
                     <main className={`${showBreeds ? "block" : "hidden"} absolute top-80 mt-8 w-72 h-64 overflow-auto p-4 rounded-md bg-cyan-800 text-slate-100`}>
                         <h4 className="text-center">Filter by Breeds</h4>
-                        <BreedFilter containerStyles="" filterBreeds={filterBreeds} />
+                        <BreedFilter containerStyles="" />
                     </main>
                 </div>
             </div>
@@ -146,6 +121,8 @@ export const Search = () => {
                 {
                     previous === "" ? (
                         <p onClick={nextPage} className="hover:cursor-pointer hover:underline hover:text-slate-600">{`Next ->`}</p>
+                    ) : next === "" ? (
+                        <p className="hover:cursor-pointer hover:underline hover:text-slate-600" onClick={previousPage}>{`<- Previous`}</p>
                     ) : (
                         <>
                             <p className="hover:cursor-pointer hover:underline hover:text-slate-600" onClick={previousPage}>{`<- Previous`}</p>
@@ -153,6 +130,7 @@ export const Search = () => {
                         </>
                     )
                 }
+
             </footer>
         </div>
     )

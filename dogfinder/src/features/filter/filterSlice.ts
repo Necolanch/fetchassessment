@@ -22,12 +22,13 @@ export const filterSlice = createSlice({
     reducers: {
         setAgeMin: (state, action) => { state.ageMin = action.payload },
         setAgeMax: (state, action) => { state.ageMax = action.payload },
-        setBreeds: (state, action) => { state.breeds = action.payload },
+        setBreeds: (state, action) => { state.breeds += action.payload },
+        removeBreeds: (state, action) => { state.breeds = action.payload },
         setZipCodes: (state, action) => { state.zipCodes = action.payload }
     }
 })
 
-export const { setAgeMin, setAgeMax, setBreeds, setZipCodes } = filterSlice.actions;
+export const { setAgeMin, setAgeMax, setBreeds, setZipCodes, removeBreeds } = filterSlice.actions;
 
 const selectAgeMin = (state: RootState) => state.filter.ageMin;
 const selectAgeMax = (state: RootState) => state.filter.ageMax;
