@@ -1,21 +1,15 @@
+import { MutableRefObject } from "react";
+
 interface ISortProps {
-    sortAtoZ: () => void;
-    sortZtoA: () => void;
+    sort: () => void;
     styles: string;
+    reference: MutableRefObject<HTMLSelectElement | null>;
 }
 
-const Sort = ({ sortAtoZ, sortZtoA, styles }: ISortProps) => {
-    const sort = () => {
-        const select = document.getElementById("sort") as HTMLSelectElement;
-        if (select.value === "A-Z") {
-            return sortAtoZ();
-        } else if (select.value === "Z-A") {
-            return sortZtoA();
-        }
-    }
+const Sort = ({ styles, sort, reference }: ISortProps) => {
     return (
         <>
-            <select role="sort" className={styles} onChange={sort} name="sort" id="sort">
+            <select role="sort" ref={reference} className={styles} onChange={sort} name="sort" id="sort">
                 <option value="Sort by:">Sort by:</option>
                 <option role="atoz" value="A-Z">A - Z</option>
                 <option role="ztoa" value="Z-A">Z - A</option>

@@ -2,6 +2,8 @@ import { APIGateway } from "../services/APIGateway";
 import { DogService } from "../services/dog/dogService";
 import { useState, useEffect } from "react";
 import Checkbox from "./Checkbox";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { setBreeds, removeBreeds } from "../features/filter/filterSlice";
 
 interface IBreedFilterProps {
     containerStyles: string;
@@ -11,11 +13,25 @@ const BreedFilter = ({ containerStyles }: IBreedFilterProps) => {
     const apiGateway = new APIGateway();
     const dogService = new DogService(apiGateway);
     const [breedsList, setBreedsList] = useState<string[]>([]);
+    const [breedsChecked, setBreedsChecked] = useState({});
+    const dispatch = useAppDispatch();
+    const breedParam = useAppSelector(state => state.filter.breeds);
 
     useEffect(() => {
         dogService.GetBreeds()
             .then(response => setBreedsList(response));
     }, [])
+
+
+    const filterBreed = (checked: boolean, breed: string) => {
+        setBreedsChecked({ ...breedsChecked, [breed]: checked });
+        if (checked === true) {
+            dispatch(setBreeds(`&breeds=${breed}`))
+        } else {
+            const newBreedParam = breedParam.replace(`&breeds=${breed}`, "")
+            dispatch(removeBreeds(newBreedParam))
+        }
+    }
 
     return (
         <>
@@ -24,7 +40,7 @@ const BreedFilter = ({ containerStyles }: IBreedFilterProps) => {
                     return (
                         <div key={breed} className={containerStyles}>
                             <label className="mr-2">{breed}</label>
-                            <Checkbox breed={breed} />
+                            <Checkbox onClick={(e: any) => filterBreed(e.target?.checked, breed)} />
                         </div>
                     )
                 })

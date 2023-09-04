@@ -1,5 +1,8 @@
 import { useAppDispatch } from "../hooks";
 import { setAgeMax, setAgeMin } from "../features/filter/filterSlice";
+import MinAgeFilter from "./MinAgeFilter";
+import MaxAgeFilter from "./MaxAgeFilter";
+import { ChangeEvent } from "react";
 
 const AgeFilter = () => {
     const dispatch = useAppDispatch();
@@ -14,22 +17,16 @@ const AgeFilter = () => {
 
     const changeAgeMax = (e: any) => {
         if (e.target.value > 20) {
-
+            console.log("age greater than 20");
+        } else {
+            dispatch(setAgeMax(e.target.value));
         }
-        dispatch(setAgeMax(e.target.value));
     }
     return (
         <div className="flex my-4">
-            <div className="mr-4">
-                <label htmlFor="minAge">Min Age</label>
-                <input className="w-12 ml-2 p-2 h-6 border rounded-md border-slate-800 focus:outline-amber-300" name="minAge" onChange={changeAgeMin} type="number" min={0} />
-            </div>
-
-            <div className="">
-                <label htmlFor="maxAge">Max Age</label>
-                <input className="w-12 ml-2 h-6 p-2 border rounded-md border-slate-800 focus:outline-amber-300" name="maxAge" onChange={changeAgeMax} type="number" max={20} />
-            </div>
-        </div>
+            <MinAgeFilter changeAgeMin={(e: ChangeEvent<HTMLInputElement>) => changeAgeMin(e)} />
+            <MaxAgeFilter changeAgeMax={(e: ChangeEvent<HTMLInputElement>) => changeAgeMax(e)} />
+        </div >
     )
 }
 

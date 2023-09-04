@@ -1,28 +1,15 @@
 import { Dog } from "../services/dog/IDog";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks";
-import { setMatchIds } from "../features/match/matchSlice";
+import { MouseEventHandler } from "react";
 
 interface IDogResult {
     dog: Dog;
+    like: MouseEventHandler;
+    removeLike: MouseEventHandler;
+    liked: boolean
 }
 
-const DogResult = ({ dog }: IDogResult) => {
-    const [liked, setLiked] = useState(false);
-    const dispatch = useAppDispatch();
-    const match = useAppSelector(state => state.match.matchIds);
-
-    const like = (id: string) => {
-        dispatch(setMatchIds(id));
-        setLiked(true);
-    }
-
-    const removeLike = (id: string) => {
-        setLiked(false);
-        const newMatch = match.filter(dogId => dogId !== id);
-        dispatch(setMatchIds(newMatch));
-    }
+const DogResult = ({ dog, like, removeLike, liked }: IDogResult) => {
 
     return (
         <div className="w-full flex flex-col items-center text-yellow-200">
@@ -31,8 +18,8 @@ const DogResult = ({ dog }: IDogResult) => {
                 <div className="w-full flex items-center justify-center mt-2">
                     <h4 className=" font-semibold text-2xl md:text-3xl">{dog.name}</h4>
                     {
-                        liked ? <AiFillHeart className="hover:cursor-pointer w-6 h-6 md:w-8 md:h-8 ml-4" onClick={() => removeLike(dog.id)} />
-                            : <AiOutlineHeart className="hover:cursor-pointer w-6 h-6 md:w-8 md:h-8 ml-4" onClick={() => like(dog.id)} />
+                        liked ? <AiFillHeart className="hover:cursor-pointer w-6 h-6 md:w-8 md:h-8 ml-4" onClick={removeLike} />
+                            : <AiOutlineHeart className="hover:cursor-pointer w-6 h-6 md:w-8 md:h-8 ml-4" onClick={like} />
                     }
                 </div>
                 <div className="md:text-lg">
