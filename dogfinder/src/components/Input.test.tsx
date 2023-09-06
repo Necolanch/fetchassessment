@@ -5,7 +5,7 @@ import React, { useRef } from "react";
 
 describe("Input", () => {
     const text = useRef<HTMLInputElement>(null);
-    const setup = () => render(<Input reference={text} type="text" role="input" styles="bg-red-500" />);
+    const setup = () => render(<Input onChange={jest.fn()} type="text" role="input" styles="bg-red-500" />);
 
     it("Should be able to be used", () => {
         setup();

@@ -1,33 +1,11 @@
-import { useState, useEffect } from "react";
-import { APIGateway } from "../services/APIGateway";
-import { DogService } from "../services/dog/dogService";
-import { useAppSelector, useAppDispatch } from "../hooks";
-import { Dog } from "../services/dog/IDog";
-import { setMatch } from "../features/match/matchSlice";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import useFetchMatch from "../hooks/useFetchMatch";
 
 const Match = () => {
-    const apiGateway = new APIGateway();
-    const dogService = new DogService(apiGateway);
-    const match = useAppSelector(state => state.match.match)
-    const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const [dogMatch, setDogMatch] = useState<Dog[]>([]);
+    const { dogMatch } = useFetchMatch();
 
-    useEffect(() => {
-        dogService.Match()
-            .then(response => response.json())
-            .then(data => dispatch(setMatch([data.match])))
-            .catch(err => console.log(err))
-    }, [])
-
-    useEffect(() => {
-        dogService.GetMatch()
-            .then(response => response.json())
-            .then(data => setDogMatch(data))
-            .catch(err => console.log(err))
-    }, [match])
     return (
         <div className={`w-screen h-screen bg-gradient-to-tr from-[#40E0D0] to-teal-200`}>
             <div className="w-screen h-20 relative top-8 flex justify-center items-center">
@@ -35,9 +13,9 @@ const Match = () => {
                 <img src={require("../img/pawprint.png")} alt="Pawprint" width={40} height={40} />
             </div>
             <p className="mt-4 text-center font-light text-sm">New friend, new home</p>
-            <div className="flex items-center ml-4">
+            <div className="flex items-center ml-4" onClick={() => navigate("/search")}>
                 <IoMdArrowRoundBack />
-                <p onClick={() => navigate("/search")} className="underline underline-offset-4 w-32 hover:cursor-pointer">Back to Search</p>
+                <p className="underline underline-offset-4 w-32 hover:cursor-pointer">Back to Search</p>
             </div>
             {
                 dogMatch.length === 0 ? (<p className="text-center text-3xl font-bold mt-12">Like some dogs first before generating your match</p>)

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SortContainer from "../components/SortContainer";
 import BreedFilter from "../components/BreedFilter";
-import DogDisplay from "../components/DogDisplay";
+import DogDisplay from "../components/DogResultContainer";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import AgeFilter from "../components/AgeFilter";
@@ -18,7 +18,7 @@ export const Search = () => {
         <>
             {
                 loading ? (<p>Loading...</p>) : (
-                    <div className={`w-screen bg-gradient-to-tr from-[#40E0D0] to-teal-200 flex flex-col`}>
+                    <div className={`w-screen h-max bg-gradient-to-tr from-[#40E0D0] to-teal-200 flex flex-col`}>
                         <div className="w-screen h-20 relative top-12 flex justify-center items-center">
                             <h1 className="font-light text-4xl text-cyan-950 text-center">NewHome</h1>
                             <img src={require("../img/pawprint.png")} alt="Pawprint" width={40} height={40} />
@@ -39,7 +39,7 @@ export const Search = () => {
                                 </main>
                             </div>
                         </div>
-                        <section className="w-screen h-max mt-8 xl:grid xl:grid-cols-3 xl:gap-2">
+                        <section className="w-screen mt-8 xl:grid xl:grid-cols-3 xl:gap-2">
                             <DogDisplay dogs={dogs} />
                         </section>
                         <FooterContainer />

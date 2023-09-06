@@ -7,7 +7,7 @@ import { AuthService } from "../services/auth/authService";
 const apiGateway = new APIGateway();
 const authGateway = new AuthService(apiGateway);
 describe("Login", () => {
-    const setup = () => render(<Login authGateway={authGateway} />);
+    const setup = () => render(<Login />);
 
     it("Renders on screen", () => {
         setup();
