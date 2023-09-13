@@ -4,22 +4,24 @@ import { useState, useEffect } from "react";
 import Checkbox from "./Checkbox";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { setBreeds, removeBreeds } from "../features/filter/filterSlice";
+import { useDogService } from "../services/dog/dogServices";
 
 interface IBreedFilterProps {
     containerStyles: string;
 }
 
 const BreedFilter = ({ containerStyles }: IBreedFilterProps) => {
-    const apiGateway = new APIGateway();
-    const dogService = new DogService(apiGateway);
+    const dogService = useDogService();
     const [breedsList, setBreedsList] = useState<string[]>([]);
     const [breedsChecked, setBreedsChecked] = useState({});
     const dispatch = useAppDispatch();
     const breedParam = useAppSelector(state => state.filter.breeds);
 
     useEffect(() => {
-        dogService.GetBreeds()
-            .then(response => setBreedsList(response));
+        if (dogService !== undefined) {
+            dogService.getBreeds()
+                .then(response => setBreedsList(response));
+        }
     }, [])
 
 

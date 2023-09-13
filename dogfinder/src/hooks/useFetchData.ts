@@ -4,19 +4,18 @@ import { setNextPage, setPreviousPage } from "../features/pages/next";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import Cookies from "js-cookie";
-import { APIGateway } from "../services/APIGateway";
-import { DogService } from "../services/dog/dogService";
 import { Dog } from "../services/dog/IDog";
+import { useDogService } from "../services/dog/dogServices";
 
 export default function useFetchData() {
-    const apiGateway = new APIGateway();
-    const dogService = new DogService(apiGateway);
+    const dogService = useDogService();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const resultIds = useAppSelector(state => state.dog.resultIds);
     const breedFilter = useAppSelector(state => state.filter.breeds);
     const ageMin = useAppSelector(state => state.filter.ageMin);
     const ageMax = useAppSelector(state => state.filter.ageMax);
+    const sort = useAppSelector(state => state.filter.sort)
     const [dogs, setDogs] = useState<Dog[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -25,18 +24,24 @@ export default function useFetchData() {
             navigate("/")
         }
 
-        dogService.DogDefault()
-            .then((response) => {
-                dispatch(setIds(response.resultIds))
-                dispatch(setNextPage(response.next))
-                dispatch(setPreviousPage(""))
-            })
-    }, [breedFilter, ageMin, ageMax])
+        if (dogService !== undefined) {
+            dogService.dogDefault()
+                .then((response) => {
+                    dispatch(setIds(response.resultIds))
+                    dispatch(setNextPage(response.next))
+                    dispatch(setPreviousPage(""))
+                })
+        }
+
+    }, [breedFilter, ageMin, ageMax, sort])
 
     useEffect(() => {
-        dogService.GetDogs()
-            .then(res => res.json())
-            .then(data => setDogs([...data]))
+        if (dogService !== undefined) {
+
+            dogService.getDogs()
+                .then(res => res.json())
+                .then(data => setDogs([...data]))
+        }
 
         setLoading(false)
     }, [resultIds])

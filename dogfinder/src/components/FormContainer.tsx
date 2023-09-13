@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
 
 interface IFormContainerProps {
-    authGateway: IAuthGateway
+    authGateway: IAuthGateway | void;
 }
 
 const FormContainer = ({ authGateway }: IFormContainerProps) => {
@@ -30,10 +30,25 @@ const FormContainer = ({ authGateway }: IFormContainerProps) => {
 
     const onSubmit = (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
-        authGateway.Login(inputState.name.value, inputState.email.value)
+        authGateway?.Login(inputState.name.value, inputState.email.value)
             .then(response => {
-                if (response.message === "Please enter your name") {
+                if (response === undefined) {
                     setInputState({
+                        name: {
+                            value: inputState.name.value,
+                            error: false
+                        },
+                        email: {
+                            value: inputState.email.value,
+                            error: false
+                        }
+                    })
+                    setTimeout(() => {
+                        Cookies.set("frontendAuth", "token", { expires: 1 / 24 })
+                        navigate("/search");
+                    }, 1000)
+                } else if (response.message === "Please enter your name") {
+                    return setInputState({
                         name: {
                             value: inputState.name.value,
                             error: true
@@ -44,7 +59,7 @@ const FormContainer = ({ authGateway }: IFormContainerProps) => {
                         }
                     })
                 } else if (response.message === "Please enter a valid email") {
-                    setInputState({
+                    return setInputState({
                         name: {
                             value: inputState.name.value,
                             error: false
@@ -54,19 +69,6 @@ const FormContainer = ({ authGateway }: IFormContainerProps) => {
                             error: true
                         }
                     })
-                } else if (response.status === 200) {
-                    setInputState({
-                        name: {
-                            value: inputState.name.value,
-                            error: false
-                        },
-                        email: {
-                            value: inputState.email.value,
-                            error: false
-                        }
-                    })
-                    Cookies.set("frontendAuth", "token", { expires: 1 / 24 })
-                    navigate("/search");
                 }
             })
             .catch(err => console.log(err));

@@ -1,41 +1,14 @@
 import Sort from "./Sort";
-import { DogService } from "../services/dog/dogService";
-import { APIGateway } from "../services/APIGateway";
-import { setIds } from "../features/dog/dogSlice";
-import { setNextPage, setPreviousPage } from "../features/pages/next";
 import { useAppDispatch } from "../hooks";
 import { useRef } from "react";
+import { setSort } from "../features/filter/filterSlice";
 
 const SortContainer = () => {
     const dispatch = useAppDispatch();
-    const apiGateway = new APIGateway();
-    const dogService = new DogService(apiGateway);
     const select = useRef<HTMLSelectElement | null>(null);
 
-    const sortAtoZ = () => {
-        dogService.DogDefault()
-            .then(response => {
-                dispatch(setIds(response.resultIds))
-                dispatch(setNextPage(response.next))
-                dispatch(setPreviousPage(""))
-            })
-    }
-
-    const sortZtoA = () => {
-        dogService.SortZtoA()
-            .then((response: any) => {
-                dispatch(setIds(response.resultIds))
-                dispatch(setNextPage(response.next))
-                dispatch(setPreviousPage(""))
-            })
-    }
-
     const sort = () => {
-        if (select.current?.value === "A-Z") {
-            return sortAtoZ();
-        } else if (select.current?.value === "Z-A") {
-            return sortZtoA();
-        }
+        dispatch(setSort(select.current?.value))
     }
     return (
         <>

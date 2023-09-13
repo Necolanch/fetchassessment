@@ -1,10 +1,9 @@
 export interface IDogGateway {
-    DogDefault: () => Promise<any>;
-    SortZtoA: () => Promise<any>;
-    GetBreeds: () => Promise<string[]>;
-    GetDogs: () => Promise<any>;
-    NextPage: () => Promise<any>;
-    PreviousPage: () => Promise<any>;
-    Match: () => Promise<any>;
-    GetMatch: () => Promise<any>;
+    dogDefault: () => Promise<any>;
+    getBreeds: () => Promise<string[]>;
+    getDogs: () => Promise<any>;
+    nextPage: () => Promise<any>;
+    previousPage: () => Promise<any>;
+    //Match: () => Promise<any>;
+    //GetMatch: () => Promise<any>;
 }

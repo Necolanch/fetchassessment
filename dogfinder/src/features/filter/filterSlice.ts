@@ -6,14 +6,14 @@ interface FilterState {
     ageMin: number | null,
     ageMax: number | null,
     breeds: string,
-    zipCodes: string[]
+    sort: string
 }
 
 const initialState: FilterState = {
     ageMin: null,
     ageMax: null,
     breeds: "",
-    zipCodes: []
+    sort: ""
 }
 
 export const filterSlice = createSlice({
@@ -24,17 +24,17 @@ export const filterSlice = createSlice({
         setAgeMax: (state, action) => { state.ageMax = action.payload },
         setBreeds: (state, action) => { state.breeds += action.payload },
         removeBreeds: (state, action) => { state.breeds = action.payload },
-        setZipCodes: (state, action) => { state.zipCodes = action.payload }
+        setSort: (state, action) => { state.sort = action.payload }
     }
 })
 
-export const { setAgeMin, setAgeMax, setBreeds, setZipCodes, removeBreeds } = filterSlice.actions;
+export const { setAgeMin, setAgeMax, setBreeds, setSort, removeBreeds } = filterSlice.actions;
 
 const selectAgeMin = (state: RootState) => state.filter.ageMin;
 const selectAgeMax = (state: RootState) => state.filter.ageMax;
 const selectBreeds = (state: RootState) => state.filter.breeds;
-const selectZipCodes = (state: RootState) => state.filter.zipCodes;
+const selectSort = (state: RootState) => state.filter.sort;
 
-export const selectors = { selectAgeMin, selectAgeMax, selectBreeds, selectZipCodes };
+export const selectors = { selectAgeMin, selectAgeMax, selectBreeds, selectSort };
 
 export default filterSlice.reducer;
