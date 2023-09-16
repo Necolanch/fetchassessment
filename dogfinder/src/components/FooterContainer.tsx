@@ -1,5 +1,4 @@
 import { useAppSelector, useAppDispatch } from "../hooks";
-import { DogService } from "../services/dog/dogService";
 import { useDogService } from "../services/dog/dogServices";
 import { setIds } from "../features/dog/dogSlice";
 import { setNextPage, setPreviousPage } from "../features/pages/next";

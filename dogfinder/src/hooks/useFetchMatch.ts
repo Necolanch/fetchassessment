@@ -1,16 +1,14 @@
 import { useState, useEffect } from "react";
-import { APIGateway } from "../services/APIGateway";
-import { DogService } from "../services/dog/dogService";
 import { useAppSelector, useAppDispatch } from "../hooks";
 import { Dog } from "../services/dog/IDog";
 import { setMatch } from "../features/match/matchSlice";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { useDogService } from "../services/dog/dogServices";
 
 
 export default function useFetchMatch() {
-    const apiGateway = new APIGateway();
-    const dogService = new DogService(apiGateway);
+    const dogService = useDogService();
     const match = useAppSelector(state => state.match.match)
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -21,14 +19,14 @@ export default function useFetchMatch() {
             navigate("/")
         }
 
-        dogService.Match()
+        dogService.match()
             .then(response => response.json())
             .then(data => dispatch(setMatch([data.match])))
             .catch(err => console.log(err))
     }, [])
 
     useEffect(() => {
-        dogService.GetMatch()
+        dogService.getMatch()
             .then(response => response.json())
             .then(data => setDogMatch(data))
             .catch(err => console.log(err))

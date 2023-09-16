@@ -12,7 +12,7 @@ export class DogService implements IDogGateway {
     private readonly ageMin: number | null = useAppSelector(state => state.filter.ageMin);
     private readonly ageMax: number | null = useAppSelector(state => state.filter.ageMax);
     private readonly matchIds: string[] = useAppSelector(state => state.match.matchIds);
-    private readonly match: string[] = useAppSelector(state => state.match.match);
+    private readonly matchP: string[] = useAppSelector(state => state.match.match);
 
     constructor(apiGateway: IAPIGateway) {
         this._apiGateway = apiGateway;
@@ -39,11 +39,11 @@ export class DogService implements IDogGateway {
         return await this._apiGateway.Get(`${this.basePath}${this.previous}`)
     }
 
-    public async Match(): Promise<any> {
+    public async match(): Promise<any> {
         return await this._apiGateway.Post(`${this.basePath}/dogs/match`, this.matchIds)
     }
 
-    public async GetMatch(): Promise<any> {
-        return await this._apiGateway.Post(`${this.basePath}/dogs`, this.match)
+    public async getMatch(): Promise<any> {
+        return await this._apiGateway.Post(`${this.basePath}/dogs`, this.matchP)
     }
 }

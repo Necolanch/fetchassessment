@@ -20,6 +20,7 @@ interface IDogServicesProps {
     match: string[],
     sort: string
 }
+
 const DogServices = ({ children, results, nextPage, previousPage, ageMin, ageMax, matchIds, match, sort, breeds }: IDogServicesProps) => {
     const _apiGateway = new APIGateway();
     const basePath: string = "https://frontend-take-home-service.fetch.com";
@@ -48,6 +49,14 @@ const DogServices = ({ children, results, nextPage, previousPage, ageMin, ageMax
 
         async previousPage(): Promise<any> {
             return await _apiGateway.Get(`${basePath}${previousPage}`)
+        },
+
+        async match(): Promise<any> {
+            return await _apiGateway.Post(`${basePath}/dogs/match`, matchIds)
+        },
+
+        async getMatch(): Promise<any> {
+            return await _apiGateway.Post(`${basePath}/dogs`, match)
         }
     }
 

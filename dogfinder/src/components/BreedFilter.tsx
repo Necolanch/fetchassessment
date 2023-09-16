@@ -1,5 +1,3 @@
-import { APIGateway } from "../services/APIGateway";
-import { DogService } from "../services/dog/dogService";
 import { useState, useEffect } from "react";
 import Checkbox from "./Checkbox";
 import { useAppDispatch, useAppSelector } from "../hooks";
