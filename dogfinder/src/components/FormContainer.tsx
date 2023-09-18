@@ -75,7 +75,7 @@ const FormContainer = ({ authGateway }: IFormContainerProps) => {
     }
     return (
         <>
-            <Form emailError={inputState.email.error} nameError={inputState.name.error} onSubmit={(e) => onSubmit(e)} onClick={(e) => onSubmit(e)} onChange={(e) => onChange(e)} />
+            <Form emailError={inputState.email.error} nameError={inputState.name.error} onSubmit={(e) => onSubmit(e)} handleClick={(e) => onSubmit(e)} handleChange={(e) => onChange(e)} />
         </>
     )
 }

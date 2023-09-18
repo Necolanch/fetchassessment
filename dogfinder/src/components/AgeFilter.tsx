@@ -1,7 +1,6 @@
 import { useAppDispatch } from "../hooks";
 import { setAgeMax, setAgeMin } from "../features/filter/filterSlice";
-import MinAgeFilter from "./MinAgeFilter";
-import MaxAgeFilter from "./MaxAgeFilter";
+import MinAgeFilter from "./AgeFilterView";
 import { ChangeEvent } from "react";
 
 const AgeFilter = () => {
@@ -24,8 +23,8 @@ const AgeFilter = () => {
     }
     return (
         <div className="flex my-4">
-            <MinAgeFilter changeAgeMin={(e: ChangeEvent<HTMLInputElement>) => changeAgeMin(e)} />
-            <MaxAgeFilter changeAgeMax={(e: ChangeEvent<HTMLInputElement>) => changeAgeMax(e)} />
+            <MinAgeFilter containerStyle="mr-4" name="minAge" labelText="Min Age" changeAge={(e: ChangeEvent<HTMLInputElement>) => changeAgeMin(e)} />
+            <MinAgeFilter containerStyle="ml-4" name="maxAge" labelText="Max Age" changeAge={(e: ChangeEvent<HTMLInputElement>) => changeAgeMax(e)} />
         </div >
     )
 }

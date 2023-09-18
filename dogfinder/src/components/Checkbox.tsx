@@ -1,7 +1,5 @@
 
-interface ICheckboxProps {
-    onClick: (e: any) => void;
-}
+interface ICheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> { }
 
 const Checkbox = ({ onClick }: ICheckboxProps) => {
     return (

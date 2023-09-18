@@ -1,6 +1,6 @@
 import { MutableRefObject } from "react";
 
-interface ISortProps {
+interface ISortProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
     sort: () => void;
     styles: string;
     reference: MutableRefObject<HTMLSelectElement | null>;
