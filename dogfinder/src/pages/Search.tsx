@@ -35,7 +35,7 @@ export const Search = () => {
                                 </div>
                                 <main className={`${showBreeds ? "block" : "hidden"} absolute top-80 mt-8 w-72 h-64 overflow-auto p-4 rounded-md bg-cyan-800 text-slate-100`}>
                                     <h4 className="text-center">Filter by Breeds</h4>
-                                    <BreedFilter containerStyles="" />
+                                    <BreedFilter />
                                 </main>
                             </div>
                         </div>

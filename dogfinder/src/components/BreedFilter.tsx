@@ -1,14 +1,10 @@
 import { useState, useEffect } from "react";
-import Checkbox from "./Checkbox";
+import CheckboxContainer from "./CheckboxContainer";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { setBreeds, removeBreeds } from "../features/filter/filterSlice";
 import { useDogService } from "../services/dog/dogServices";
 
-interface IBreedFilterProps {
-    containerStyles: string;
-}
-
-const BreedFilter = ({ containerStyles }: IBreedFilterProps) => {
+const BreedFilter = () => {
     const dogService = useDogService();
     const [breedsList, setBreedsList] = useState<string[]>([]);
     const [breedsChecked, setBreedsChecked] = useState({});
@@ -38,10 +34,7 @@ const BreedFilter = ({ containerStyles }: IBreedFilterProps) => {
             {
                 breedsList.map(breed => {
                     return (
-                        <div key={breed} className={containerStyles}>
-                            <label className="mr-2">{breed}</label>
-                            <Checkbox onClick={(e: any) => filterBreed(e.target?.checked, breed)} />
-                        </div>
+                        <CheckboxContainer filterBreed={filterBreed} breed={breed} />
                     )
                 })
             }

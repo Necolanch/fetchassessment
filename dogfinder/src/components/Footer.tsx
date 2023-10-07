@@ -1,4 +1,3 @@
-
 interface IFooterProps {
     nextPage: () => void;
     previousPage: () => void;
